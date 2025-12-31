@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyToShip | Эксперт в цепочках поставок Шэньчжэнь-Москва</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&display=swap');
+        body { font-family: 'Noto Sans SC', sans-serif; scroll-behavior: smooth; background: #f8fafc; }
+        .page-view { display: none; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+        .page-view.active { display: block; opacity: 1; transform: translateY(0); }
+        .hero-gradient {
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)),
+            url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+        }
+        .about-bg {
+            background: linear-gradient(rgba(10, 15, 30, 0.9), rgba(10, 15, 30, 0.9)),
+            url('https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-attachment: fixed;
+        }
+        .hover-card { transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        @media (min-width: 1024px) {
+            .hover-card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px -15px rgba(0,0,0,0.15); }
+        }
+        #productCalcModal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            z-index: 9999; 
+            background: rgba(15, 23, 42, 0.95); 
+            backdrop-filter: blur(25px); 
+        }
+        .calc-sidebar { background: #0f172a; border-radius: 2rem; }
+        @media (min-width: 768px) {
+            .calc-sidebar { border-radius: 3rem; }
+        }
+        .calc-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #60a5fa; transition: 0.3s; }
+        .calc-input:focus { background: rgba(255, 255, 255, 0.1); border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 px-4 md:px-8 py-3 md:py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2 md:space-x-3 cursor-pointer group" onclick="switchView('home')">
+            <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-lg md:rounded-xl flex items-center justify-center text-white shadow-lg font-black italic transform group-hover:rotate-12 transition text-base md:text-lg">E</div>
+            <span class="text-lg md:text-xl font-black italic uppercase tracking-tighter text-slate-900">EasyTo<span class="text-blue-600">Ship</span></span>
+        </div>
+        <div class="hidden lg:flex items-center space-x-12 text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">
+            <a href="javascript:void(0)" onclick="switchView('home')" class="hover:text-blue-600 transition">Главная</a>
+            <a href="javascript:void(0)" onclick="switchView('catalog')" class="hover:text-blue-600 transition">Каталог</a>
+            <a href="javascript:void(0)" onclick="switchView('about')" class="hover:text-blue-600 transition">Сервис</a>
+        </div>
+        <a href="https://t.me/easytoship" target="_blank" class="bg-blue-600 text-white px-4 md:px-8 py-2 md:py-3 rounded-full text-[10px] md:text-xs font-black shadow-xl hover:scale-105 transition">Менеджер</a>
+    </nav>
+
+    <main id="view-home" class="page-view active">
+        <header class="hero-gradient text-white py-24 md:py-56 px-6 text-center">
+            <div class="max-w-5xl mx-auto space-y-6 md:space-y-10">
+                <h1 class="text-4xl md:text-8xl font-black italic tracking-tighter leading-tight">Удвойте прибыль<br><span class="text-blue-400">с прямыми закупками</span></h1>
+                <p class="text-base md:text-xl text-slate-300 font-light max-w-3xl mx-auto italic leading-relaxed">Полная цепочка поставок Шэньчжэнь-Москва. Обмен рублей на <span class="text-blue-400 font-bold">USDT</span>, таможня включена.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-6 pt-4">
+                    <button onclick="switchView('catalog')" class="bg-blue-600 px-8 md:px-12 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-base md:text-lg shadow-2xl hover:bg-blue-700 transition">Товары</button>
+                    <button onclick="switchView('about')" class="bg-white/10 border border-white/20 px-8 md:px-12 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-base md:text-lg backdrop-blur-md">О сервисе</button>
+                </div>
+            </div>
+        </header>
+        <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-16 gap-4">
+                <h2 class="text-3xl md:text-4xl font-black italic border-l-8 border-blue-600 pl-6 uppercase">Хиты прибыли</h2>
+                <a href="javascript:void(0)" onclick="switchView('catalog')" class="text-blue-600 font-black text-sm hover:underline">Смотреть все <i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12" id="home-grid"></div>
+        </section>
+    </main>
+
+    <main id="view-catalog" class="page-view py-16 md:py-24 px-6 md:px-8 bg-white min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black italic uppercase mb-10 md:mb-16 tracking-tighter border-l-8 border-blue-600 pl-6">База товаров (30+)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8" id="catalog-grid"></div>
+        </div>
+    </main>
+
+    <main id="view-about" class="page-view about-bg min-h-screen py-16 md:py-24 px-6 md:px-8 text-white">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-5xl font-black italic uppercase mb-12 md:mb-20 text-center tracking-tighter">Сервис EasyToShip</h2>
+            <div class="grid grid-cols-1 gap-4 md:gap-6">
+                <div class="bg-white/5 p-6 md:p-10 rounded-2xl md:rounded-[3rem] border border-white/10 flex flex-col md:flex-row items-start gap-4 md:gap-10 hover:bg-white/10 transition">
+                    <span class="text-4xl md:text-5xl font-black text-blue-500 italic opacity-40">01</span>
+                    <div>
+                        <h4 class="text-xl md:text-2xl font-black mb-2 italic">Закупки и переговоры</h4>
+                        <p class="text-slate-400 italic text-sm md:text-base">Используя преимущества команд в Шэньчжэне и Иу, мы находим лучшие фабрики и обеспечиваем минимальные отпускные цены.</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-6 md:p-10 rounded-2xl md:rounded-[3rem] border border-white/10 flex flex-col md:flex-row items-start gap-4 md:gap-10 hover:bg-white/10 transition">
+                    <span class="text-4xl md:text-5xl font-black text-blue-500 italic opacity-40">02</span>
+                    <div>
+                        <h4 class="text-xl md:text-2xl font-black mb-2 italic">Контроль качества</h4>
+                        <p class="text-slate-400 italic text-sm md:text-base">Проверка каждой партии с видеоотчетом. Усиленная упаковка для обеспечения сохранности при транспортировке.</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-6 md:p-10 rounded-2xl md:rounded-[3rem] border border-white/10 flex flex-col md:flex-row items-start gap-4 md:gap-10 hover:bg-white/10 transition">
+                    <span class="text-4xl md:text-5xl font-black text-blue-500 italic opacity-40">03</span>
+                    <div>
+                        <h4 class="text-xl md:text-2xl font-black mb-2 italic">Логистика и таможня</h4>
+                        <p class="text-slate-400 italic text-sm md:text-base">Оформление экспорта и возврат налогов. Авиа и авто доставка Китай-Россия с полной таможенной очисткой до склада в Москве.</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-6 md:p-10 rounded-2xl md:rounded-[3rem] border border-white/10 flex flex-col md:flex-row items-start gap-4 md:gap-10 hover:bg-white/10 transition">
+                    <span class="text-4xl md:text-5xl font-black text-emerald-500 italic opacity-40">04</span>
+                    <div>
+                        <h4 class="text-xl md:text-2xl font-black mb-2 italic text-emerald-400">Расчеты в USDT в Москве</h4>
+                        <p class="text-slate-300 italic font-bold text-sm md:text-base">Прием наличных рублей или банковских переводов в Москве. Мгновенный обмен на USDT для оплаты товара, безопасность и прозрачность.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-950 text-white py-16 md:py-24 px-6 md:px-8 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
+            <div class="col-span-1 md:col-span-2 space-y-6 md:space-y-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic">E</div>
+                    <span class="text-2xl font-black italic uppercase tracking-tighter">EasyTo<span class="text-blue-600">Ship</span></span>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed max-w-sm italic">Профессиональный партнер в цепочке поставок. Мы не просто перевозчики, мы ваш отдел закупок и контроля рисков в Китае.</p>
+                <div class="flex gap-4 md:gap-6 items-center">
+                    <a href="https://t.me/easytoship" target="_blank" class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-blue-400 hover:bg-blue-500 hover:text-white transition-all"><i class="fab fa-telegram-plane text-lg md:text-xl"></i></a>
+                    <a href="javascript:void(0)" onclick="alert('WeChat: EasyToShip_Service')" class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-green-400 hover:bg-green-500 hover:text-white transition-all"><i class="fab fa-weixin text-lg md:text-xl"></i></a>
+                    <a href="#" class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all"><i class="fab fa-whatsapp text-lg md:text-xl"></i></a>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <h4 class="text-[10px] font-black uppercase text-slate-700 tracking-[0.4em] mb-10">Навигация</h4>
+                <ul class="space-y-5 text-sm font-bold italic text-slate-400">
+                    <li><a href="javascript:void(0)" onclick="switchView('home')" class="hover:text-blue-500 transition">Главная</a></li>
+                    <li><a href="javascript:void(0)" onclick="switchView('catalog')" class="hover:text-blue-500 transition">Каталог</a></li>
+                    <li><a href="javascript:void(0)" onclick="switchView('about')" class="hover:text-blue-500 transition">Сервис</a></li>
+                </ul>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div class="bg-blue-600/10 p-6 md:p-10 rounded-2xl md:rounded-[2.5rem] border border-blue-600/20 text-center relative overflow-hidden group">
+                    <p class="text-xl md:text-2xl font-black italic text-blue-500 mb-2">ОПЛАТА USDT</p>
+                    <p class="text-[9px] text-slate-500 uppercase tracking-widest font-black italic text-center">Безопасно и мгновенно</p>
+                </div>
+                <div class="bg-emerald-500/5 p-4 md:p-6 rounded-xl md:rounded-[2rem] border border-emerald-500/20 flex items-center gap-4">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 text-xs md:text-sm">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div>
+                        <p class="text-[8px] md:text-[10px] font-black text-emerald-500 uppercase tracking-widest italic">Местный обмен в Москве</p>
+                        <p class="text-[10px] md:text-xs text-slate-400 font-bold italic">Обмен Рубль / USDT в реальном времени</p>
+                    </div>
+                </div>
+                <p class="text-[8px] md:text-[9px] text-slate-700 mt-4 italic text-right uppercase tracking-[0.2em] font-black">© 2024 EasyToShip Logistics</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="productCalcModal" class="flex items-center justify-center p-2 md:p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-6xl rounded-2xl md:rounded-[4rem] overflow-hidden shadow-2xl flex flex-col md:flex-row relative my-auto">
+            <button onclick="closeCalc()" class="absolute top-4 right-4 md:top-10 md:right-10 text-slate-400 hover:text-slate-900 text-2xl md:text-3xl z-50 transition hover:rotate-90"><i class="fas fa-times-circle"></i></button>
+            
+            <div class="w-full md:w-5/12 p-6 md:p-12 bg-slate-50 flex flex-col items-center justify-between border-b md:border-b-0 md:border-r border-slate-100">
+                <div class="w-full text-center">
+                    <span class="px-4 py-1 bg-white rounded-full text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest shadow-sm">Выбранный товар</span>
+                    <div class="w-40 h-40 md:w-72 md:h-72 mx-auto bg-white rounded-2xl md:rounded-[3.5rem] shadow-xl flex items-center justify-center p-6 md:p-12 my-4 md:my-10 border border-slate-50">
+                        <img id="mImg" src="" class="max-w-full max-h-full object-contain">
+                    </div>
+                    <h2 id="mTitle" class="text-xl md:text-3xl font-black text-slate-900 italic tracking-tighter mb-2 md:mb-4"></h2>
+                </div>
+                <div class="w-full bg-blue-600 p-4 md:p-8 rounded-xl md:rounded-[3rem] text-center text-white shadow-lg">
+                    <p class="text-[8px] md:text-[10px] font-black uppercase opacity-60 mb-1 tracking-widest">Средняя цена на OZON</p>
+                    <p class="text-2xl md:text-4xl font-black italic"><span id="mMarket">0</span> ₽</p>
+                </div>
+            </div>
+
+            <div class="w-full md:w-7/12 p-6 md:p-12 calc-sidebar text-white flex flex-col justify-between overflow-y-auto max-h-[70vh] md:max-h-[90vh]">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-black italic uppercase tracking-tighter mb-6 md:mb-8 flex items-center">Анализ прибыльности <span class="bg-blue-500/20 h-px flex-1 ml-4 md:ml-6"></span></h3>
+                    
+                    <div class="relative group mb-6 md:mb-8">
+                        <label class="absolute -top-3 left-6 px-2 bg-[#0f172a] text-[8px] md:text-[10px] font-black text-blue-500 uppercase tracking-widest">Количество заказа (шт)</label>
+                        <input type="number" id="mInput" value="100" oninput="runCalc()" class="w-full calc-input rounded-xl md:rounded-3xl py-4 md:py-7 px-6 md:px-8 text-3xl md:text-5xl font-black outline-none">
+                    </div>
+
+                    <div class="space-y-3 md:space-y-4">
+                        <div class="flex justify-between items-center py-2 border-b border-white/5 px-2">
+                            <span class="text-slate-400 italic text-xs md:text-sm">1. Стоимость товара (Ex-work)</span>
+                            <span id="resPureCargo" class="text-white font-black text-lg md:text-xl">$0</span>
+                        </div>
+                        
+                        <div class="py-2 border-b border-white/5 px-2">
+                            <div class="flex justify-between items-start">
+                                <div class="flex flex-col">
+                                    <span class="text-slate-400 italic text-xs md:text-sm">2. Комиссия (Закупка/Контроль)</span>
+                                    <span class="text-[8px] md:text-[9px] text-blue-500 mt-1 font-bold italic">Тариф: &lt;$10k(5%) | $10k-$50k(4%) | &gt;$50k(3%)</span>
+                                </div>
+                                <span id="resComm" class="text-emerald-400 font-black text-lg md:text-xl">$0</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center py-2 border-b border-white/5 px-2">
+                            <span class="text-slate-400 italic text-xs md:text-sm">3. Оценочная доставка и таможня</span>
+                            <span id="resShip" class="text-orange-400 font-black text-lg md:text-xl">$0</span>
+                        </div>
+
+                        <div class="py-4 border-b border-white/5 px-4 bg-blue-500/5 rounded-xl md:rounded-2xl">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-200 italic text-xs md:text-sm font-bold">Итоговая себестоимость (Landed)</span>
+                                <span id="resTotal" class="text-blue-400 font-black text-xl md:text-2xl italic">$0</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 md:gap-4 mt-2">
+                            <div class="bg-white/5 rounded-xl md:rounded-2xl p-3 md:p-4">
+                                <p class="text-[8px] md:text-[10px] text-slate-500 font-black uppercase mb-1">Ожидаемая прибыль</p>
+                                <p id="resProfit" class="text-xl md:text-2xl font-black text-emerald-400 italic">$0</p>
+                            </div>
+                            <div class="bg-white/5 rounded-xl md:rounded-2xl p-3 md:p-4">
+                                <p class="text-[8px] md:text-[10px] text-slate-500 font-black uppercase mb-1">Маржинальность</p>
+                                <p id="resMargin" class="text-xl md:text-2xl font-black text-orange-400 italic">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="window.open('https://t.me/easytoship', '_blank')" class="w-full bg-white text-slate-900 py-4 md:py-6 mt-6 rounded-xl md:rounded-3xl font-black text-lg md:text-xl hover:bg-blue-500 hover:text-white transition-all shadow-xl">Получить официальную смету</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Домашний смарт-проектор", price: 45, market: 12500, img: "https://picsum.photos/seed/p1/600/400", tag: "Электроника", hot: true },
+            { id: 2, name: "Перкуссионный массажер", price: 12, market: 3800, img: "https://picsum.photos/seed/p2/600/400", tag: "Фитнес", hot: true },
+            { id: 3, name: "TWS наушники с ANC", price: 8, market: 2400, img: "https://picsum.photos/seed/p3/600/400", tag: "Аксессуары", hot: true },
+            { id: 4, name: "Портативная кофемашина", price: 28, market: 7500, img: "https://picsum.photos/seed/p4/600/400", tag: "Кухня", hot: false },
+            { id: 5, name: "Автокормушка для питомцев", price: 32, market: 8800, img: "https://picsum.photos/seed/p5/600/400", tag: "Зоотовары", hot: false },
+            { id: 6, name: "Набор мебели для кемпинга", price: 18, market: 5200, img: "https://picsum.photos/seed/p6/600/400", tag: "Outdoor", hot: false },
+            { id: 7, name: "Беспроводной пылесос", price: 35, market: 9200, img: "https://picsum.photos/seed/p7/600/400", tag: "Дом", hot: false },
+            { id: 8, name: "Массажер для шеи", price: 15, market: 4200, img: "https://picsum.photos/seed/p8/600/400", tag: "Уход", hot: false },
+            { id: 9, name: "Умный электрочайник", price: 22, market: 6000, img: "https://picsum.photos/seed/p9/600/400", tag: "Кухня", hot: false },
+            { id: 10, name: "Эргономичное кресло", price: 55, market: 18500, img: "https://picsum.photos/seed/p10/600/400", tag: "Офис", hot: false },
+            { id: 11, name: "Очиститель воздуха", price: 19, market: 5500, img: "https://picsum.photos/seed/p11/600/400", tag: "Здоровье", hot: false },
+            { id: 12, name: "Складная беговая дорожка", price: 120, market: 35000, img: "https://picsum.photos/seed/p12/600/400", tag: "Фитнес", hot: false },
+            { id: 13, name: "Ирригатор для зубов", price: 11, market: 3200, img: "https://picsum.photos/seed/p13/600/400", tag: "Гигиена", hot: false },
+            { id: 14, name: "Кухонный блендер", price: 40, market: 11500, img: "https://picsum.photos/seed/p14/600/400", tag: "Кухня", hot: false },
+            { id: 15, name: "Ионный фен", price: 16, market: 4800, img: "https://picsum.photos/seed/p15/600/400", tag: "Красота", hot: false },
+            { id: 16, name: "Смарт-часы", price: 25, market: 7800, img: "https://picsum.photos/seed/p16/600/400", tag: "Гаджеты", hot: false },
+            { id: 17, name: "Электрогриль", price: 20, market: 5800, img: "https://picsum.photos/seed/p17/600/400", tag: "Кухня", hot: false },
+            { id: 18, name: "Механическая клавиатура", price: 24, market: 7200, img: "https://picsum.photos/seed/p18/600/400", tag: "ПК", hot: false },
+            { id: 19, name: "Экран для проектора", price: 14, market: 4500, img: "https://picsum.photos/seed/p19/600/400", tag: "ТВ", hot: false },
+            { id: 20, name: "Игровые наушники", price: 18, market: 5200, img: "https://picsum.photos/seed/p20/600/400", tag: "Гейминг", hot: false },
+            { id: 21, name: "Автоматический туалет", price: 85, market: 22000, img: "https://picsum.photos/seed/p21/600/400", tag: "Зоо", hot: false },
+            { id: 22, name: "Умный замок", price: 42, market: 12800, img: "https://picsum.photos/seed/p22/600/400", tag: "Дом", hot: false },
+            { id: 23, name: "Магнитный Powerbank", price: 9, market: 2800, img: "https://picsum.photos/seed/p23/600/400", tag: "Мобильные", hot: false },
+            { id: 24, name: "Штатив для проектора", price: 6, market: 1800, img: "https://picsum.photos/seed/p24/600/400", tag: "Аксессуары", hot: false },
+            { id: 25, name: "Постельное белье (хлопок)", price: 30, market: 8500, img: "https://picsum.photos/seed/p25/600/400", tag: "Текстиль", hot: false },
+            { id: 26, name: "Автомобильный насос", price: 13, market: 3900, img: "https://picsum.photos/seed/p26/600/400", tag: "Авто", hot: false },
+            { id: 27, name: "Рюкзак для походов", price: 17, market: 4900, img: "https://picsum.photos/seed/p27/600/400", tag: "Спорт", hot: false },
+            { id: 28, name: "Фитнес костюм", price: 12, market: 3500, img: "https://picsum.photos/seed/p28/600/400", tag: "Одежда", hot: false },
+            { id: 29, name: "Кухонный таймер", price: 3, market: 900, img: "https://picsum.photos/seed/p29/600/400", tag: "Кухня", hot: false },
+            { id: 30, name: "Кольцевая лампа LED", price: 7, market: 2200, img: "https://picsum.photos/seed/p30/600/400", tag: "Фото", hot: false }
+        ];
+
+        let currentP = null;
+
+        function switchView(viewId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function createCard(p) {
+            return `
+                <div class="hover-card bg-white rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-slate-100 group">
+                    <div class="relative h-48 md:h-64 overflow-hidden bg-slate-100">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        ${p.hot ? '<span class="absolute top-4 left-4 md:top-6 md:left-6 bg-red-500 text-white px-3 md:px-4 py-1 rounded-full text-[8px] md:text-[10px] font-black italic shadow-lg">ХИТ ПРОДАЖ</span>' : ''}
+                        <span class="absolute top-4 right-4 md:top-6 md:right-6 bg-white/90 backdrop-blur px-3 md:px-4 py-1 rounded-full text-[8px] md:text-[10px] font-black text-slate-600 shadow-sm">${p.tag}</span>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <h3 class="text-lg md:text-xl font-black text-slate-900 mb-2 italic">${p.name}</h3>
+                        <div class="flex justify-between items-end mb-4 md:mb-6">
+                            <div>
+                                <p class="text-[8px] md:text-[10px] font-black text-slate-400 mb-1">Закупочная цена</p>
+                                <p class="text-xl md:text-2xl font-black text-blue-600 italic">$${p.price}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[8px] md:text-[10px] font-black text-slate-400 mb-1">Рынок РФ</p>
+                                <p class="text-base md:text-lg font-black text-slate-400 line-through italic">${p.market} ₽</p>
+                            </div>
+                        </div>
+                        <button onclick="openCalc(${p.id})" class="w-full bg-slate-900 text-white py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-xs md:text-sm hover:bg-blue-600 transition shadow-lg">Расчет прибыли</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openCalc(id) {
+            currentP = products.find(p => p.id === id);
+            document.getElementById('mImg').src = currentP.img;
+            document.getElementById('mTitle').innerText = currentP.name;
+            document.getElementById('mMarket').innerText = currentP.market.toLocaleString();
+            document.getElementById('productCalcModal').style.setProperty('display', 'flex', 'important');
+            runCalc();
+        }
+
+        function closeCalc() { document.getElementById('productCalcModal').style.setProperty('display', 'none', 'important'); }
+
+        function runCalc() {
+            const qty = document.getElementById('mInput').value || 0;
+            const pure = qty * currentP.price; 
+            let rate = 0.05;
+            if (pure > 50000) rate = 0.03; else if (pure > 10000) rate = 0.04;
+            const comm = pure * rate; 
+            const ship = pure * 0.12; 
+            const totalCost = pure + comm + ship;
+            const marketRUB = qty * currentP.market;
+            const marketUSD = marketRUB / 90;
+            const profit = marketUSD - totalCost;
+            const margin = totalCost > 0 ? (profit / totalCost) * 100 : 0;
+
+            document.getElementById('resPureCargo').innerText = `$${pure.toLocaleString()}`;
+            document.getElementById('resComm').innerText = `$${comm.toLocaleString()}`;
+            document.getElementById('resShip').innerText = `$${ship.toLocaleString()}`;
+            document.getElementById('resTotal').innerText = `$${totalCost.toLocaleString()}`;
+            document.getElementById('resProfit').innerText = `$${Math.round(profit).toLocaleString()}`;
+            document.getElementById('resMargin').innerText = `${margin.toFixed(1)}%`;
+        }
+
+        document.getElementById('home-grid').innerHTML = products.filter(p => p.hot).slice(0,3).map(p => createCard(p)).join('');
+        document.getElementById('catalog-grid').innerHTML = products.map(p => createCard(p)).join('');
+    </script>
+</body>
+</html>
